@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import timedelta
 
-URL_DATABASE = "mysql+pymysql://root:yourpassword@localhost:3306/yourdatabase"
+URL_DATABASE = "mysql+pymysql://root:tharun@localhost:3306/yourdatabase"
 
 engine = create_engine(URL_DATABASE)
 

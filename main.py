@@ -1,7 +1,7 @@
-import firebase_admin
-from firebase_admin import credentials
-import boto3
-from botocore.exceptions import ClientError, NoCredentialsError
+#import firebase_admin
+#from firebase_admin import credentials
+#import boto3
+#from botocore.exceptions import ClientError, NoCredentialsError
 from fastapi import FastAPI, UploadFile, HTTPException, Depends, status
 from typing import List, Annotated
 from pydanticmodels import UserBase
@@ -12,7 +12,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from datetime import datetime
 import logging
-
+import os
+from fastapi.responses import FileResponse
 #BRANCH ME
 
 app = FastAPI()
@@ -46,10 +47,10 @@ app.add_middleware(
 )
 
 # AWS S3 Setup
-s3_client = boto3.client('s3', aws_access_key_id='use.envhere', aws_secret_access_key='use.envhere')
-bucket_name = 'youramazonbucketname'
-
-
+#s3_client = boto3.client('s3', aws_access_key_id='use.envhere', aws_secret_access_key='use.envhere')
+#bucket_name = 'youramazonbucketname'
+UPLOAD_DIR="uploaded_photos"
+os.makedirs(UPLOAD_DIR,exist_ok=True)
 
 
 
@@ -59,25 +60,26 @@ bucket_name = 'youramazonbucketname'
 @app.post("/upload_user_foto/")
 async def upload_user_photo(user_id: str ,file: UploadFile, db: db_dependency):
     try:
-        contents = await file.read()
-        s3_client.put_object(Bucket=bucket_name, Key=file.filename, Body=contents)
-        key = f"{file.filename}"
-        
+        file_loc=os.path.join(UPLOAD_DIR,file.filename)
+        with open(file_loc,"wb") as f:
+            f.write(await file.read())
         db_user = db.query(models.User).filter(models.User.id == user_id).first()
           # Get current user data
         
         if db_user:
             # Update foto field with the S3 key
-            setattr(db_user, 'foto', key)  # Corrected line
+            db_user.foto=file.filename
+            #setattr(db_user, 'foto', key)  # Corrected line
             db.commit()  # Commit changes to the database
         else:
             # If db_user is None, create a new user with the provided user_id and foto
-            new_user = models.User(id=user_id, foto=key)
+            new_user = models.User(id=user_id, foto=file.filename)
             db.add(new_user)
             db.commit()
         
-        return {"filename": key }  # Return the S3 key
-    except NoCredentialsError:
+        return {"filename": file.filename }  # Return the S3 key
+    except Exception as e:
+        print("ERROR:", str(e))
         raise HTTPException(status_code=500, detail="S3 Credential Error")
     finally:
         await file.close()
@@ -90,19 +92,20 @@ async def get_user_picture(user_id: str, db: db_dependency):
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
-        profile_pic_filename = user.foto
-        if not profile_pic_filename:
+        #profile_pic_filename = user.foto
+        file_path=os.path.join(UPLOAD_DIR,user.foto)
+        if not os.path.exists(file_path):
             raise HTTPException(status_code=404, detail="Profile picture not found")
 
         # Generate presigned URL using the filename from the database
-        response = s3_client.generate_presigned_url(
+        """response = s3_client.generate_presigned_url(
             'get_object',
             Params={'Bucket': bucket_name, 'Key': profile_pic_filename},
             ExpiresIn=None
-        )
-        return response
+        )"""
+        return FileResponse(file_path)
 
-    except ClientError as e:
+    except Exception as e:
         logging.error(e)
         raise HTTPException(status_code=500, detail="Failed to generate presigned URL")
 
@@ -205,7 +208,8 @@ async def delete_user(user_id: str, db: db_dependency):
         raise HTTPException(status_code=404, detail="User not found")
 
     # Soft delete by updating deleted field with timestamp
-    db_user.deleted = datetime.now()
+    #db_user.deleted = datetime.now()
+    db.delete(db_user)
     db.commit()
 
     return None

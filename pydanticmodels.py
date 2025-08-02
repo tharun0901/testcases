@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
+from datetime import datetime
 
 
 class S3UploadResponse(BaseModel):
@@ -15,7 +16,7 @@ class UserBase(BaseModel):
     telefone: Optional[int] = Field(None, alias="telefone")
     email: Optional[str]
     password: Optional[str]
-    deleted: Optional[str]
+    deleted: Optional[datetime]
 
 
 
