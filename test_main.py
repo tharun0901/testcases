@@ -17,7 +17,7 @@ def test_get_user_picture():
 def test_create_user():
     tc.delete(f"/delete_user/{user_id}")
     res=tc.post(f"/create_user/?_id={user_id}",json={
-    "nome": "zxtharu00ncg",
+    "nome": "zxtharu00ncgh",
     "role": 1,
     "foto":"pic1.jpg" ,
     "telefone":4661225,
@@ -41,7 +41,7 @@ def test_get_user_by_id(user_id,new_user_id):
     assert res.json()["id"]==new_user_id
 def test_update_user():
     res=tc.post(f"/update_user/{user_id}",json={
-        "nome":"z13tvhga_1",
+        "nome":"z13tvhga_1h",
         "role":1,
         "foto":"pic2.jpg",
         "telefone":173764,
