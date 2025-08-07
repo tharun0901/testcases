@@ -21,13 +21,13 @@ jobs:
 
       - name: Install dependencies
         run: |
+          set -e  # Stop on first error
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pytest  # Ensure pytest is available
 
-      - name: Check pytest installation
-        run: |
-          pip show pytest
+      - name: Verify pytest is installed
+        run: pip show pytest
 
       - name: Run tests
-        run: |
-          python -m pytest
+        run: pytest
