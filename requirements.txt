@@ -6,6 +6,7 @@ pymysql
 python-dotenv
 uvicorn
 pytest
+python-multipart
 boto3==1.34.97
 botocore==1.34.97
 firebase_admin==6.5.0
