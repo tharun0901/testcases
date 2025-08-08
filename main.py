@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 import logging
 import os
+import tempfile
 from fastapi.responses import FileResponse
 #BRANCH ME
 
@@ -47,7 +48,7 @@ app.add_middleware(
 #bucket_name = 'youramazonbucketname'
 #UPLOAD_DIR = os.path.join(tempfile.gettempdir(), "uploaded_photos")
 
-UPLOAD_DIR = "/uploaded_photos"
+UPLOAD_DIR = "/tmp/uploaded_photos"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
