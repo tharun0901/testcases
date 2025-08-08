@@ -4,3 +4,8 @@ test_images/
 __pycache__/
 .venv/
 .git/
+test_images/
+test_api.py
+test_main.py
+test_test.py
+test.py

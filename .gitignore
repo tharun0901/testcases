@@ -1,0 +1,52 @@
+# Python cache and bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment folder (if you use one)
+.venv/
+env/
+venv/
+
+# Upload folders where photos or files are stored locally
+uploaded_photos/
+
+# Test images or any local test data
+test_images/
+
+# Environment variables file containing secrets and config (never commit)
+.env
+.env.*
+
+# Logs and debug files
+*.log
+
+# VS Code settings (optional)
+.vscode/
+
+# Git folder itself should be ignored automatically, but good to ensure
+.git/
+
+# MacOS system files (if using mac)
+.DS_Store
+
+# Python packaging files
+*.egg-info/
+dist/
+build/
+
+# Coverage reports from tests
+htmlcov/
+.coverage
+
+# pytest cache
+.pytest_cache/
+
+# Byte-compiled / optimized / DLL files
+*.so
+*.dylib
+*.dll
+
+# Ignore any other IDE/editor folders like .idea/
+.idea/
