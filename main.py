@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 import logging
 import os
+import tempfile
 from fastapi.responses import FileResponse
 #BRANCH ME
 
@@ -45,7 +46,7 @@ app.add_middleware(
 # AWS S3 Setup
 #s3_client = boto3.client('s3', aws_access_key_id='use.envhere', aws_secret_access_key='use.envhere')
 #bucket_name = 'youramazonbucketname'
-UPLOAD_DIR="uploaded_photos"
+UPLOAD_DIR=os.path.join(tempfile.gettempdir(),"uploaded_photos")
 os.makedirs(UPLOAD_DIR,exist_ok=True)
 
 
