@@ -8,3 +8,5 @@ pymysql
 pytest
 requests
 python-dotenv
+uvicorn
+mangum
