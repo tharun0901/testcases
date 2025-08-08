@@ -1,0 +1,6 @@
+uploaded_photos/
+test_images/
+*.pyc
+__pycache__/
+.venv/
+.git/

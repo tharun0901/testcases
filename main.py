@@ -1,7 +1,3 @@
-#import firebase_admin
-#from firebase_admin import credentials
-#import boto3
-#from botocore.exceptions import ClientError, NoCredentialsError
 from fastapi import FastAPI, UploadFile, HTTPException, Depends, status
 from typing import List, Annotated
 from pydanticmodels import UserBase
